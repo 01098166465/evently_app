@@ -10,6 +10,7 @@ class AppTheme {
   static const Color red = Color(0xFFFF5659);
 
   static ThemeData lightTheme = ThemeData(
+    scaffoldBackgroundColor: backgroundLight,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: primary,
       type: BottomNavigationBarType.fixed,
@@ -20,6 +21,58 @@ class AppTheme {
       backgroundColor: primary,
       foregroundColor: white,
       shape: CircleBorder(side: BorderSide(color: white, width: 0)),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(
+        color: grey,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: grey),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: grey),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: red),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: primary,
+        textStyle: TextStyle(
+          fontStyle: FontStyle.italic,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    ),
+    textTheme: TextTheme(
+      titleLarge: TextStyle(
+        color: white,
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+      ),
+      titleMedium: TextStyle(
+        color: black,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
     ),
   );
 
