@@ -1,5 +1,5 @@
 import 'package:evently/auth/register_screen.dart';
-import 'package:evently/home_screen.dart';
+
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
