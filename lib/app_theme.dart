@@ -17,6 +17,12 @@ class AppTheme {
       selectedItemColor: white,
       unselectedItemColor: white,
     ),
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      backgroundColor: AppTheme.backgroundLight,
+      titleTextStyle: TextStyle(color: primary, fontSize: 22),
+      foregroundColor: primary,
+    ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: primary,
       foregroundColor: white,
