@@ -30,11 +30,11 @@ class AppTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: grey),
+        borderSide: BorderSide(color: primary),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: grey),
+        borderSide: BorderSide(color: primary),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
