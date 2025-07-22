@@ -1,4 +1,5 @@
 import 'package:evently/auth/register_screen.dart';
+import 'package:evently/home_screen.dart';
 
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
@@ -40,7 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
               prefixIconImageName: "password",
             ),
             SizedBox(height: 24),
-            DefaultElevetedButton(label: "Login", onPressed: login),
+            DefaultElevetedButton(
+              label: "Login",
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(HomeScreen.routeName),
+            ),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
