@@ -31,7 +31,7 @@ class ProfileHeader extends StatelessWidget {
                   Text("Mahmoud khaled", style: textTheme.headlineSmall),
                   SizedBox(height: 10),
                   Text(
-                    "mahmpoudkhaled@gmail.com",
+                    "mahmoudkhaled@gmail.com",
                     style: textTheme.titleMedium!.copyWith(
                       color: AppTheme.white,
                     ),

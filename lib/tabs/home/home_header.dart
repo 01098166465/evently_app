@@ -1,7 +1,7 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/models/categery_model.dart';
 import 'package:evently/tabs/home/tab_item.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 
 class HomeHeader extends StatefulWidget {
@@ -34,7 +34,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               Text("Mahmoud Khaled", style: textTheme.headlineSmall),
               SizedBox(height: 16),
               DefaultTabController(
-                length: CategoryModel.category.length + 1,
+                length: CategoryModel.categories.length + 1,
                 child: TabBar(
                   isScrollable: true,
                   indicatorColor: Colors.transparent,
@@ -55,13 +55,13 @@ class _HomeHeaderState extends State<HomeHeader> {
                       selectedBackgroundColor: AppTheme.white,
                       unselectedForegroundColor: AppTheme.white,
                     ),
-                    ...CategoryModel.category.map(
+                    ...CategoryModel.categories.map(
                       (category) => TabItem(
                         label: category.name,
                         icon: category.icon,
                         isSelected:
                             currentIndex ==
-                            CategoryModel.category.indexOf(category) + 1,
+                            CategoryModel.categories.indexOf(category) + 1,
                         selectedForegroundColor: AppTheme.primary,
                         selectedBackgroundColor: AppTheme.white,
                         unselectedForegroundColor: AppTheme.white,

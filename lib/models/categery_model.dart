@@ -12,7 +12,7 @@ class CategoryModel {
     required this.imageName,
   });
 
-  static List<CategoryModel> category = [
+  static List<CategoryModel> categories = [
     CategoryModel(
       id: "1",
       name: "sport",
@@ -21,9 +21,9 @@ class CategoryModel {
     ),
     CategoryModel(
       id: "2",
-      name: "birthdy",
+      name: "birthday",
       icon: Icons.cake_outlined,
-      imageName: "birthdy",
+      imageName: "birthday",
     ),
     CategoryModel(
       id: "3",
