@@ -4,9 +4,13 @@ import 'package:evently/auth/register_screen.dart';
 import 'package:evently/create_event_screen.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro/intro_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(EventlyApp());
 }
 
@@ -22,7 +26,7 @@ class EventlyApp extends StatelessWidget {
         IntroScreen.routeName: (_) => IntroScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
       },
-      initialRoute: IntroScreen.routeName,
+      initialRoute: HomeScreen.routeName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
