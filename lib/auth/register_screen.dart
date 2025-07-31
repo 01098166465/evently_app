@@ -65,6 +65,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ],
             ),
+            SizedBox(height: 24),
+            Image.asset("assets/images/language.png"),
           ],
         ),
       ),
