@@ -1,5 +1,6 @@
+import 'package:evently/app_theme.dart';
 import 'package:evently/auth/register_screen.dart';
-import 'package:evently/home_screen.dart';
+
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -58,6 +60,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
+            SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(child: Divider(color: AppTheme.primary)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    "Or",
+                    style: textTheme.titleMedium!.copyWith(
+                      color: AppTheme.primary,
+                    ),
+                  ),
+                ),
+
+                Expanded(child: Divider(color: AppTheme.primary)),
+              ],
+            ),
+            SizedBox(height: 24),
+
+            DefaultElevetedButton(
+              svgIcon: "assets/icons/google.svg",
+              label: "Login With Google",
+              borderColor: AppTheme.primary,
+              textColor: AppTheme.primary,
+              color: AppTheme.backgroundLight,
+              onPressed: () {},
+            ),
+            SizedBox(height: 24),
+            Image.asset("assets/images/language.png"),
           ],
         ),
       ),
