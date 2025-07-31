@@ -1,9 +1,7 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/register_screen.dart';
-<<<<<<< HEAD
+
 import 'package:evently/home_screen.dart';
-=======
->>>>>>> feature/auth
 
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
