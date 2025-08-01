@@ -3,6 +3,8 @@ import 'package:evently/firebase_service.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
+import 'package:evently/widgets/ui_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
@@ -105,12 +107,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void register() {
     if (formkey.currentState!.validate()) {
       FirebaseService.register(
-        name: nameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-      ).then((user) {
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-      });
+            name: nameController.text,
+            email: emailController.text,
+            password: passwordController.text,
+          )
+          .then((user) {
+            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          })
+          .catchError((error) {
+            String? errorMessage;
+            if (error is FirebaseAuthException) {
+              errorMessage = error.message;
+            }
+            UiUtils.showErrorMessage(errorMessage);
+          });
+      ;
     }
   }
 }
