@@ -3,6 +3,7 @@ import 'package:evently/models/categery_model.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomeHeader extends StatefulWidget {
   void Function(CategoryModel?) filterEvents;
@@ -32,8 +33,21 @@ class _HomeHeaderState extends State<HomeHeader> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 8),
               Text("Welcome Back ✨", style: textTheme.titleSmall),
+              SizedBox(height: 8),
               Text("Mahmoud Khaled", style: textTheme.headlineSmall),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/map.svg",
+                    height: 24,
+                    width: 24,
+                  ),
+                  Text("Cairo , Egypt", style: textTheme.titleSmall),
+                ],
+              ),
               SizedBox(height: 16),
               DefaultTabController(
                 length: CategoryModel.categories.length + 1,

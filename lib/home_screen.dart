@@ -1,5 +1,5 @@
 import 'package:evently/app_theme.dart';
-import 'package:evently/create_event_screen.dart';
+import 'package:evently/events/create_event_screen.dart';
 import 'package:evently/nav_bar_icon.dart';
 import 'package:evently/tabs/home/home_tab.dart';
 import 'package:evently/tabs/love/love_tab.dart';

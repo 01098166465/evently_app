@@ -1,5 +1,6 @@
 import 'package:evently/app_theme.dart';
-import 'package:evently/create_event_screen.dart';
+
+import 'package:evently/events/edit_event_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -15,9 +16,8 @@ class EventDetalisScreen extends StatelessWidget {
         title: Text("Event Details"),
         actions: [
           IconButton(
-            onPressed: () => Navigator.of(
-              context,
-            ).pushReplacementNamed(CreateEventScreen.routeName),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(EditEventScreen.routeName),
             icon: SvgPicture.asset("assets/icons/edit.svg"),
             color: AppTheme.primary,
           ),

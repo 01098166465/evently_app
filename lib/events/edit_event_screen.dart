@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/app_theme.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/models/categery_model.dart';
@@ -12,14 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-class CreateEventScreen extends StatefulWidget {
-  static const String routeName = "/create-event";
+class EditEventScreen extends StatefulWidget {
+  static const String routeName = "/";
 
   @override
-  State<CreateEventScreen> createState() => _CreateEventScreenState();
+  State<EditEventScreen> createState() => _EditEventScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
+class _EditEventScreenState extends State<EditEventScreen> {
   CategoryModel selectedCategory = CategoryModel.categories.first;
   TextEditingController titleController = TextEditingController();
   TextEditingController discriptionController = TextEditingController();
@@ -34,7 +33,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     TextTheme textTheme = Theme.of(context).textTheme;
     Size screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: AppBar(title: Text("Create Event")),
+      appBar: AppBar(title: Text("Edit Event")),
 
       body: SingleChildScrollView(
         child: Column(
@@ -190,9 +189,53 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 24),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppTheme.primary),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primary,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: SvgPicture.asset(
+                              "assets/icons/location.svg",
+                              color: AppTheme.white,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Cairo , Egypt ",
+                                  style: textTheme.titleMedium!.copyWith(
+                                    color: AppTheme.primary,
+                                  ),
+                                ),
+                                Spacer(),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    color: AppTheme.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
                     DefaultElevetedButton(
-                      label: "Add Event",
+                      label: "Update Event",
                       onPressed: createEvent,
                     ),
                   ],
