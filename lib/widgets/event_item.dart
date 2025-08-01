@@ -1,4 +1,6 @@
 import 'package:evently/app_theme.dart';
+
+import 'package:evently/event_detalis_screen.dart';
 import 'package:evently/models/event_model.dart';
 
 import 'package:flutter/material.dart';
@@ -13,7 +15,7 @@ class EventItem extends StatelessWidget {
     Size screenSize = MediaQuery.sizeOf(context);
     return InkWell(
       onTap: () {
-        //  Navigator.of(context).pushNamed(CreateEventScreen.routeName);
+        Navigator.of(context).pushNamed(EventDetalisScreen.routeName);
       },
       child: Stack(
         children: [
