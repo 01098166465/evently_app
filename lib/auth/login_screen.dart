@@ -1,5 +1,6 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/register_screen.dart';
+import 'package:evently/firebase_service.dart';
 
 import 'package:evently/home_screen.dart';
 
@@ -44,11 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
               prefixIconImageName: "password",
             ),
             SizedBox(height: 24),
-            DefaultElevetedButton(
-              label: "Login",
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(HomeScreen.routeName),
-            ),
+            DefaultElevetedButton(label: "Login", onPressed: login),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -93,13 +90,18 @@ class _LoginScreenState extends State<LoginScreen> {
               color: AppTheme.backgroundLight,
               onPressed: () {},
             ),
-            SizedBox(height: 24),
-            Image.asset("assets/images/language.png"),
           ],
         ),
       ),
     );
   }
 
-  void login() {}
+  void login() {
+    FirebaseService.login(
+      email: emailController.text,
+      password: passwordController.text,
+    ).then((user) {
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    });
+  }
 }
