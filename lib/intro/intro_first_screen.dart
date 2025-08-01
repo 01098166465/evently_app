@@ -13,11 +13,11 @@ class IntroFirstScreen extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset("assets/images/intro.png", height: screenHeight * 0.2),
+            Image.asset("assets/images/intro.png", height: screenHeight * 0.15),
             SizedBox(height: 10),
             Image.asset("assets/images/intro1.png", height: screenHeight * 0.4),
             SizedBox(height: 10),
@@ -61,7 +61,8 @@ class IntroFirstScreen extends StatelessWidget {
                 SvgPicture.asset("assets/icons/theme.svg"),
               ],
             ),
-            SizedBox(height: 40),
+
+            Spacer(),
             DefaultElevetedButton(
               label: "Let’s Start",
               onPressed: () =>
