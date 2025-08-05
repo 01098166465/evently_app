@@ -1,9 +1,11 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/login_screen.dart';
 import 'package:evently/firebase_service.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/tabs/profile/profile_header.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileTab extends StatelessWidget {
   List<Language> language = [
@@ -90,7 +92,12 @@ class ProfileTab extends StatelessWidget {
                     FirebaseService.logout().then((_) {
                       Navigator.of(
                         context,
-                      ).pushReplacementNamed(LoginScreen.routeName);
+                      ).pushReplacementNamed(LoginScreen.routeName).then((_) {
+                        Provider.of<UserProvider>(
+                          context,
+                          listen: false,
+                        ).updateCurrentUser(null);
+                      });
                     });
                   },
                 ),

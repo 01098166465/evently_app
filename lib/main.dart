@@ -8,6 +8,8 @@ import 'package:evently/home_screen.dart';
 import 'package:evently/intro/intro_first_screen.dart';
 import 'package:evently/intro/intro_screen.dart';
 import 'package:evently/providers/events_provider.dart';
+import 'package:evently/providers/user_provider.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +19,11 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => EventsProvider()..getEvents(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => EventsProvider()..getEvents()),
+      ],
       child: EventlyApp(),
     ),
   );
