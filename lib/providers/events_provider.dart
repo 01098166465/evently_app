@@ -24,4 +24,11 @@ class EventsProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void fliterFavouriteEvents(List<String> favouriteIds) {
+    favouriteEvents = allEvents
+        .where((event) => favouriteIds.contains(event.id))
+        .toList();
+    notifyListeners();
+  }
 }
