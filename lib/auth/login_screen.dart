@@ -119,17 +119,33 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() {
     if (formkey.currentState!.validate()) {
       FirebaseService.login(
-            email: emailController.text,
-            password: passwordController.text,
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
           )
           .then((user) {
             Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
           })
           .catchError((error) {
-            String? errorMessage;
+            String errorMessage = 'Unexpected error occurred';
+
             if (error is FirebaseAuthException) {
-              errorMessage = error.message;
+              switch (error.code) {
+                case 'user-not-found':
+                  errorMessage = 'Account not found';
+                  break;
+                case 'wrong-password':
+                  errorMessage = 'Incorrect password';
+                  break;
+                case 'invalid-email':
+                  errorMessage = 'Invalid email';
+                  break;
+                default:
+                  errorMessage = 'Error: ${error.message}';
+              }
+            } else {
+              print('Non-Firebase error: $error');
             }
+
             UiUtils.showErrorMessage(errorMessage);
           });
     }

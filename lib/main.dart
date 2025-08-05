@@ -7,14 +7,21 @@ import 'package:evently/events/detalis_event_screen.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro/intro_first_screen.dart';
 import 'package:evently/intro/intro_screen.dart';
+import 'package:evently/providers/events_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(EventlyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => EventsProvider()..getEvents(),
+      child: EventlyApp(),
+    ),
+  );
 }
 
 class EventlyApp extends StatelessWidget {
@@ -33,7 +40,7 @@ class EventlyApp extends StatelessWidget {
         EditEventScreen.routeName: (_) => EditEventScreen(),
       },
 
-      initialRoute: HomeScreen.routeName,
+      initialRoute: LoginScreen.routeName,
 
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

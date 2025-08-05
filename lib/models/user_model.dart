@@ -15,13 +15,13 @@ class UserModel {
         id: json["id"],
         name: json["name"],
         email: json["email"],
-        favouriteEventsIds: json["favouriteEventsIds"],
+        favouriteEventsIds: (json["favouriteEventsIds"] as List).cast<String>(),
       );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
     "email": email,
-    "favouriteEventsId": favouriteEventsIds,
+    "favouriteEventsIds": favouriteEventsIds,
   };
 }
