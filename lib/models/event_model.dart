@@ -8,6 +8,7 @@ class EventModel {
   String title;
   String description;
   DateTime dateTime;
+
   EventModel({
     required this.category,
     this.id = "",
@@ -16,20 +17,22 @@ class EventModel {
     required this.dateTime,
     required this.userId,
   });
-  EventModel.formJson(Map<String, dynamic> json)
-    : this(
-        id: json["id"],
-        userId: json["userId"],
-        category: CategoryModel.categories.firstWhere(
-          (Category) => Category.id == json["categoryId"],
-        ),
-        title: json["title"],
-        dateTime: (json["timestamp"] as Timestamp).toDate(),
-        description: json["description"],
-      );
+
+  factory EventModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return EventModel(
+      id: doc.id,
+      userId: data["userId"],
+      category: CategoryModel.categories.firstWhere(
+        (category) => category.id == data["categoryId"],
+      ),
+      title: data["title"],
+      description: data["description"],
+      dateTime: (data["timestamp"] as Timestamp).toDate(),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "userId": userId,
     "categoryId": category.id,
     "title": title,

@@ -2,6 +2,7 @@ import 'package:evently/app_theme.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/models/categery_model.dart';
 import 'package:evently/models/event_model.dart';
+import 'package:evently/providers/events_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const String routeName = "/create-event";
@@ -259,6 +261,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         selectedTime!.hour,
         selectedTime!.minute,
       );
+
       EventModel event = EventModel(
         userId: FirebaseAuth.instance.currentUser!.uid,
         category: selectedCategory,
@@ -266,10 +269,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         description: discriptionController.text,
         dateTime: dateTime,
       );
+
       FirebaseService.createEvent(event)
-          .then((_) {
+          .then((_) async {
+            await Provider.of<EventsProvider>(
+              context,
+              listen: false,
+            ).getEvents();
+
             Navigator.of(context).pop();
-            UiUtils.showSuccessMessage("Event created successuflly");
+            UiUtils.showSuccessMessage("Event created successfully");
           })
           .catchError((_) {
             UiUtils.showErrorMessage("Failed to create event");

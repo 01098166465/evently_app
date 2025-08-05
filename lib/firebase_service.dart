@@ -9,7 +9,7 @@ class FirebaseService {
           .collection("events")
           .withConverter<EventModel>(
             fromFirestore: (docSnapshot, _) =>
-                EventModel.formJson(docSnapshot.data()!),
+                EventModel.fromFirestore(docSnapshot),
             toFirestore: (event, _) => event.toJson(),
           );
 
@@ -22,19 +22,17 @@ class FirebaseService {
             toFirestore: (user, _) => user.toJson(),
           );
 
-  static Future<void> createEvent(EventModel event) {
-    CollectionReference<EventModel> eventsCollection = getEventsCollection();
-    DocumentReference<EventModel> doc = eventsCollection.doc();
+  static Future<void> createEvent(EventModel event) async {
+    final eventsCollection = getEventsCollection();
+    final doc = eventsCollection.doc();
     event.id = doc.id;
-    return doc.set(event);
+    await doc.set(event);
   }
 
   static Future<List<EventModel>> getEvents() async {
-    CollectionReference<EventModel> eventsCollection = getEventsCollection();
-    QuerySnapshot<EventModel> querySnapshot = await eventsCollection
-        .orderBy("timestamp")
-        .get();
-    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList();
+    final eventsCollection = getEventsCollection();
+    final querySnapshot = await eventsCollection.orderBy("timestamp").get();
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 
   static Future<UserModel> register({
@@ -42,15 +40,17 @@ class FirebaseService {
     required String email,
     required String password,
   }) async {
-    UserCredential credential = await FirebaseAuth.instance
+    final credential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
-    UserModel user = UserModel(
+
+    final user = UserModel(
       id: credential.user!.uid,
       name: name,
       email: email,
       favouriteEventsIds: [],
     );
-    CollectionReference<UserModel> usersCollection = getUsersCollection();
+
+    final usersCollection = getUsersCollection();
     await usersCollection.doc(user.id).set(user);
     return user;
   }
@@ -59,34 +59,33 @@ class FirebaseService {
     required String email,
     required String password,
   }) async {
-    UserCredential credential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-    CollectionReference<UserModel> usersCollection = getUsersCollection();
-    DocumentSnapshot<UserModel> docSnapshot = await usersCollection
-        .doc(credential.user!.uid)
-        .get();
+    final usersCollection = getUsersCollection();
+    final docSnapshot = await usersCollection.doc(credential.user!.uid).get();
     return docSnapshot.data()!;
   }
 
   static Future<void> logout() => FirebaseAuth.instance.signOut();
+
   static Future<void> addEventToFavourites(String eventId) async {
-    CollectionReference<UserModel> usersCollection = getUsersCollection();
-    DocumentReference<UserModel> userDoc = usersCollection.doc(
-      FirebaseAuth.instance.currentUser!.uid,
-    );
+    final usersCollection = getUsersCollection();
+    final userDoc = usersCollection.doc(FirebaseAuth.instance.currentUser!.uid);
+
     return userDoc.update({
-      "favouriteEventsId": FieldValue.arrayUnion([eventId]),
+      "favouriteEventsIds": FieldValue.arrayUnion([eventId]),
     });
   }
 
   static Future<void> removeEventToFavourites(String eventId) async {
-    CollectionReference<UserModel> usersCollection = getUsersCollection();
-    DocumentReference<UserModel> userDoc = usersCollection.doc(
-      FirebaseAuth.instance.currentUser!.uid,
-    );
+    final usersCollection = getUsersCollection();
+    final userDoc = usersCollection.doc(FirebaseAuth.instance.currentUser!.uid);
+
     return userDoc.update({
-      "favouriteEventsId": FieldValue.arrayRemove([eventId]),
+      "favouriteEventsIds": FieldValue.arrayRemove([eventId]),
     });
   }
 }
