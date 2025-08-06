@@ -3,6 +3,7 @@ import 'package:evently/auth/register_screen.dart';
 import 'package:evently/firebase_service.dart';
 
 import 'package:evently/home_screen.dart';
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/providers/user_provider.dart';
 
 import 'package:evently/widgets/default_eleveted_button.dart';
@@ -66,7 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               SizedBox(height: 24),
-              DefaultElevetedButton(label: "Login", onPressed: login),
+              DefaultElevetedButton(
+                label: AppLocalizations.of(context)!.login,
+                onPressed: login,
+              ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () => Navigator.of(
                       context,
                     ).pushReplacementNamed(RegisterScreen.routeName),
-                    child: Text("Create Account"),
+                    child: Text(AppLocalizations.of(context)!.createAccount),
                   ),
                 ],
               ),
@@ -111,6 +115,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: AppTheme.backgroundLight,
                 onPressed: () {},
               ),
+              SizedBox(height: 24),
+              Image.asset("assets/images/language.png"),
             ],
           ),
         ),
