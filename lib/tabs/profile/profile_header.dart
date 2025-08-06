@@ -7,15 +7,16 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.currentUser;
     TextTheme textTheme = Theme.of(context).textTheme;
     Size screenSize = MediaQuery.sizeOf(context);
+
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.primary,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(64)),
       ),
-
       child: SafeArea(
         child: Row(
           children: [
@@ -25,19 +26,14 @@ class ProfileHeader extends StatelessWidget {
               fit: BoxFit.fill,
             ),
             SizedBox(width: 16),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-
                 children: [
-                  Text(
-                    userProvider.currentUser!.name,
-                    style: textTheme.headlineSmall,
-                  ),
+                  Text(user?.name ?? "mk", style: textTheme.headlineSmall),
                   SizedBox(height: 10),
                   Text(
-                    userProvider.currentUser!.email,
+                    user?.email ?? "mk ",
                     style: textTheme.titleMedium!.copyWith(
                       color: AppTheme.white,
                     ),

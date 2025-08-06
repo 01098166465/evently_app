@@ -3,6 +3,7 @@ import 'package:evently/firebase_service.dart';
 import 'package:evently/models/categery_model.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/providers/events_provider.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
@@ -32,6 +33,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     Size screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
@@ -74,7 +76,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         isSelected:
                             currentIndex ==
                             CategoryModel.categories.indexOf(category),
-                        selectedForegroundColor: AppTheme.white,
+                        selectedForegroundColor: settingsProvider.isDark
+                            ? AppTheme.black
+                            : AppTheme.white,
                         selectedBackgroundColor: AppTheme.primary,
                         unselectedForegroundColor: AppTheme.primary,
                       ),
@@ -127,6 +131,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       children: [
                         SvgPicture.asset(
                           "assets/icons/date.svg",
+                          colorFilter: ColorFilter.mode(
+                            settingsProvider.isDark
+                                ? AppTheme.white
+                                : AppTheme.black,
+                            BlendMode.srcIn,
+                          ),
                           height: 24,
                           width: 24,
                         ),
@@ -163,6 +173,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       children: [
                         SvgPicture.asset(
                           "assets/icons/time.svg",
+                          colorFilter: ColorFilter.mode(
+                            settingsProvider.isDark
+                                ? AppTheme.white
+                                : AppTheme.black,
+                            BlendMode.srcIn,
+                          ),
                           height: 24,
                           width: 24,
                         ),

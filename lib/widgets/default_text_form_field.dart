@@ -30,6 +30,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
     return TextFormField(
       controller: widget.controller,
       onChanged: widget.onChanged,
+      style: Theme.of(context).textTheme.titleMedium,
       decoration: InputDecoration(
         hintText: widget.hintText,
         prefixIcon: widget.prefixIconImageName == null

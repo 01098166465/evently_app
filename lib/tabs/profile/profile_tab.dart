@@ -1,6 +1,7 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/login_screen.dart';
 import 'package:evently/firebase_service.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/tabs/profile/profile_header.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
@@ -14,6 +15,7 @@ class ProfileTab extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +36,9 @@ class ProfileTab extends StatelessWidget {
                     Text(
                       "Language",
                       style: textTheme.titleLarge!.copyWith(
-                        color: AppTheme.black,
+                        color: settingsProvider.isDark
+                            ? AppTheme.white
+                            : AppTheme.black,
                       ),
                     ),
                     Container(
@@ -73,13 +77,20 @@ class ProfileTab extends StatelessWidget {
                     Text(
                       "Dark Theme",
                       style: textTheme.titleLarge!.copyWith(
-                        color: AppTheme.black,
+                        color: settingsProvider.isDark
+                            ? AppTheme.white
+                            : AppTheme.black,
                       ),
                     ),
                     Switch(
-                      value: true,
-                      activeColor: AppTheme.primary,
-                      onChanged: (value) {},
+                      value: settingsProvider.isDark,
+
+                      activeTrackColor: AppTheme.primary,
+                      onChanged: (isDark) {
+                        settingsProvider.changeTheme(
+                          isDark ? ThemeMode.dark : ThemeMode.light,
+                        );
+                      },
                     ),
                   ],
                 ),

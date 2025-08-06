@@ -92,5 +92,86 @@ class AppTheme {
     ),
   );
 
-  static ThemeData darkTheme = ThemeData();
+  static ThemeData darkTheme = ThemeData(
+    scaffoldBackgroundColor: backgroundDark,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: backgroundDark,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: white,
+      unselectedItemColor: white,
+    ),
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      backgroundColor: backgroundDark,
+      titleTextStyle: TextStyle(color: primary, fontSize: 22),
+      foregroundColor: primary,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: backgroundDark,
+      foregroundColor: white,
+      shape: CircleBorder(side: BorderSide(color: white, width: 0)),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(
+        color: white,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: primary),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: primary),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: red),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: primary,
+        textStyle: TextStyle(
+          fontStyle: FontStyle.italic,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    ),
+    textTheme: TextTheme(
+      headlineSmall: TextStyle(
+        color: white,
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+      ),
+      titleLarge: TextStyle(
+        color: white,
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+      ),
+      titleMedium: TextStyle(
+        color: white,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      titleSmall: TextStyle(
+        color: white,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+    ),
+  );
 }
