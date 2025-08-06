@@ -95,7 +95,9 @@ class _HomeHeaderState extends State<HomeHeader> {
                         isSelected:
                             currentIndex ==
                             CategoryModel.categories.indexOf(category) + 1,
-                        selectedForegroundColor: AppTheme.white,
+                        selectedForegroundColor: settingsProvider.isDark
+                            ? AppTheme.white
+                            : AppTheme.primary,
                         selectedBackgroundColor: settingsProvider.isDark
                             ? AppTheme.primary
                             : AppTheme.white,
