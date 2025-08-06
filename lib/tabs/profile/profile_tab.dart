@@ -1,6 +1,7 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/login_screen.dart';
 import 'package:evently/firebase_service.dart';
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/tabs/profile/profile_header.dart';
@@ -52,7 +53,7 @@ class ProfileTab extends StatelessWidget {
                         underline: SizedBox(),
                         iconEnabledColor: AppTheme.primary,
 
-                        value: "en",
+                        value: settingsProvider.languageCode,
                         style: textTheme.titleLarge!.copyWith(
                           color: AppTheme.primary,
                         ),
@@ -64,7 +65,10 @@ class ProfileTab extends StatelessWidget {
                               ),
                             )
                             .toList(),
-                        onChanged: (value) {},
+                        onChanged: (languageCode) {
+                          if (languageCode == null) return;
+                          settingsProvider.changeLanguage(languageCode);
+                        },
                       ),
                     ),
                   ],
@@ -96,7 +100,7 @@ class ProfileTab extends StatelessWidget {
                 ),
                 Spacer(),
                 DefaultElevetedButton(
-                  label: "Logout",
+                  label: AppLocalizations.of(context)!.logout,
                   svgIcon: "assets/icons/Exit.svg",
                   color: AppTheme.red,
                   onPressed: () {

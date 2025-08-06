@@ -1,6 +1,7 @@
 import 'package:evently/auth/login_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/home_screen.dart';
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
@@ -77,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 24),
               DefaultElevetedButton(
-                label: "Create Account",
+                label: AppLocalizations.of(context)!.createAccount,
                 onPressed: register,
               ),
               SizedBox(height: 20),
@@ -93,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: () => Navigator.of(
                       context,
                     ).pushReplacementNamed(LoginScreen.routeName),
-                    child: Text(" Login"),
+                    child: Text(AppLocalizations.of(context)!.login),
                   ),
                 ],
               ),
