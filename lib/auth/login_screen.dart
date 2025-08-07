@@ -75,10 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Don’t Have Account ?",
-                    style: TextTheme.of(context).titleMedium,
-                  ),
+                  Text("Don’t Have Account ?", style: textTheme.titleMedium),
 
                   TextButton(
                     onPressed: () => Navigator.of(
@@ -113,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderColor: AppTheme.primary,
                 textColor: AppTheme.primary,
                 color: AppTheme.backgroundLight,
-                onPressed: () {},
+                onPressed: loginWithGoogle,
               ),
               SizedBox(height: 24),
               Image.asset("assets/images/language.png"),
@@ -160,6 +157,31 @@ class _LoginScreenState extends State<LoginScreen> {
             print(error);
             UiUtils.showErrorMessage(errorMessage);
           });
+    }
+  }
+
+  void loginWithGoogle() async {
+    try {
+      final user = await FirebaseService.signInWithGoogle();
+
+      Provider.of<UserProvider>(context, listen: false).updateCurrentUser(user);
+
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } catch (error) {
+      String errorMessage = 'حدث خطأ أثناء تسجيل الدخول بجوجل';
+
+      if (error is FirebaseAuthException) {
+        switch (error.code) {
+          case 'sign-in-cancelled':
+            errorMessage = 'تم إلغاء تسجيل الدخول بجوجل.';
+            break;
+          default:
+            errorMessage = 'خطأ: ${error.message}';
+        }
+      }
+
+      print(error);
+      UiUtils.showErrorMessage(errorMessage);
     }
   }
 }

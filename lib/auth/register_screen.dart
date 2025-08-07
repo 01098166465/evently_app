@@ -25,6 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -85,10 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Don’t Have Account ?",
-                    style: TextTheme.of(context).titleMedium,
-                  ),
+                  Text("Don’t Have Account ?", style: textTheme.titleMedium),
 
                   TextButton(
                     onPressed: () => Navigator.of(

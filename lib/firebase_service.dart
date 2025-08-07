@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseService {
   static CollectionReference<EventModel> getEventsCollection() =>
@@ -114,5 +115,50 @@ class FirebaseService {
     return userDoc.update({
       "favouriteEventsIds": FieldValue.arrayRemove([eventId]),
     });
+  }
+
+  static Future<UserModel> signInWithGoogle() async {
+    final googleSignIn = GoogleSignIn();
+
+    await googleSignIn.signOut();
+
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+    if (googleUser == null) {
+      throw FirebaseAuthException(
+        code: 'sign-in-cancelled',
+        message: 'User cancelled Google sign-in',
+      );
+    }
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final userCredential = await FirebaseAuth.instance.signInWithCredential(
+      credential,
+    );
+
+    final user = userCredential.user!;
+    final usersCollection = getUsersCollection();
+
+    final doc = await usersCollection.doc(user.uid).get();
+
+    if (!doc.exists) {
+      final newUser = UserModel(
+        id: user.uid,
+        name: user.displayName ?? "Unnamed",
+        email: user.email ?? "",
+        favouriteEventsIds: [],
+      );
+      await usersCollection.doc(newUser.id).set(newUser);
+      return newUser;
+    } else {
+      return doc.data()!;
+    }
   }
 }

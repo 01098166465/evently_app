@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:evently/providers/events_provider.dart';
 
 class EditEventScreen extends StatefulWidget {
-  static const String routeName = "/";
+  static const String routeName = "/edit_screen";
 
   @override
   State<EditEventScreen> createState() => _EditEventScreenState();

@@ -66,7 +66,6 @@ class EventDetalisScreen extends StatelessWidget {
                   );
                   await provider.getEvents();
 
-                  // ✅ SnackBar باللون الأخضر
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
