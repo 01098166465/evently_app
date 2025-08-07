@@ -27,7 +27,9 @@ class EventItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(EventDetalisScreen.routeName);
+        Navigator.of(
+          context,
+        ).pushNamed(EventDetalisScreen.routeName, arguments: event);
       },
       child: Container(
         decoration: BoxDecoration(

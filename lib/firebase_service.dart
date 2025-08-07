@@ -29,6 +29,33 @@ class FirebaseService {
     await doc.set(event);
   }
 
+  static Future<void> updateEvent(EventModel event) async {
+    final eventsCollection = getEventsCollection();
+
+    if (event.id == null) {
+      throw Exception("Event ID is required to update the event.");
+    }
+
+    await eventsCollection.doc(event.id).set(event);
+  }
+
+  static Future<void> deleteEvent(String eventId) async {
+    final eventsCollection = getEventsCollection();
+    final usersCollection = getUsersCollection();
+
+    await eventsCollection.doc(eventId).delete();
+
+    final usersSnapshot = await usersCollection.get();
+    for (var userDoc in usersSnapshot.docs) {
+      final user = userDoc.data();
+      if (user.favouriteEventsIds.contains(eventId)) {
+        await userDoc.reference.update({
+          "favouriteEventsIds": FieldValue.arrayRemove([eventId]),
+        });
+      }
+    }
+  }
+
   static Future<List<EventModel>> getEvents() async {
     final eventsCollection = getEventsCollection();
     final querySnapshot = await eventsCollection.orderBy("timestamp").get();

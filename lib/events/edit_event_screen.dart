@@ -1,15 +1,17 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/firebase_service.dart';
+import 'package:evently/home_screen.dart';
 import 'package:evently/models/categery_model.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:evently/widgets/ui_utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:evently/providers/events_provider.dart';
 
 class EditEventScreen extends StatefulWidget {
   static const String routeName = "/";
@@ -19,6 +21,8 @@ class EditEventScreen extends StatefulWidget {
 }
 
 class _EditEventScreenState extends State<EditEventScreen> {
+  late EventModel event;
+
   CategoryModel selectedCategory = CategoryModel.categories.first;
   TextEditingController titleController = TextEditingController();
   TextEditingController discriptionController = TextEditingController();
@@ -29,12 +33,36 @@ class _EditEventScreenState extends State<EditEventScreen> {
   int currentIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      event = ModalRoute.of(context)!.settings.arguments as EventModel;
+
+      final index = CategoryModel.categories.indexWhere(
+        (cat) => cat.name == event.category.name,
+      );
+
+      if (index != -1) {
+        setState(() {
+          currentIndex = index;
+          selectedCategory = CategoryModel.categories[index];
+          titleController.text = event.title;
+          discriptionController.text = event.description;
+          selectedDate = event.dateTime;
+          selectedTime = TimeOfDay.fromDateTime(event.dateTime);
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     Size screenSize = MediaQuery.sizeOf(context);
+
     return Scaffold(
       appBar: AppBar(title: Text("Edit Event")),
-
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,10 +71,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(16),
+                borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
                   "assets/images/${selectedCategory.imageName}.png",
-
                   height: screenSize.height * 0.25,
                   width: double.infinity,
                   fit: BoxFit.fill,
@@ -63,7 +90,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 tabAlignment: TabAlignment.start,
                 labelPadding: EdgeInsets.only(right: 10),
                 padding: EdgeInsets.only(left: 16),
-
                 tabs: CategoryModel.categories
                     .map(
                       (category) => TabItem(
@@ -86,7 +112,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 },
               ),
             ),
-
             Padding(
               padding: EdgeInsets.all(16),
               child: Form(
@@ -97,7 +122,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     Text("Title", style: textTheme.titleMedium),
                     SizedBox(height: 8),
                     DefaultTextFormField(
-                      hintText: "Event Title",
+                      hintText: "Enter title",
                       prefixIconImageName: "title",
                       controller: titleController,
                       validator: (value) {
@@ -111,7 +136,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     Text("Description", style: textTheme.titleMedium),
                     SizedBox(height: 8),
                     DefaultTextFormField(
-                      hintText: "Event Description",
+                      hintText: "Enter description",
                       controller: discriptionController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -137,6 +162,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                               context: context,
                               firstDate: DateTime.now(),
                               lastDate: DateTime.now().add(Duration(days: 365)),
+                              initialDate: selectedDate ?? DateTime.now(),
                               initialEntryMode:
                                   DatePickerEntryMode.calendarOnly,
                             );
@@ -171,7 +197,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           onTap: () async {
                             TimeOfDay? time = await showTimePicker(
                               context: context,
-                              initialTime: TimeOfDay.now(),
+                              initialTime: selectedTime ?? TimeOfDay.now(),
                             );
                             if (time != null) {
                               selectedTime = time;
@@ -190,53 +216,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       ],
                     ),
                     SizedBox(height: 16),
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppTheme.primary),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppTheme.primary,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/icons/location.svg",
-                              color: AppTheme.white,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Cairo , Egypt ",
-                                  style: textTheme.titleMedium!.copyWith(
-                                    color: AppTheme.primary,
-                                  ),
-                                ),
-                                Spacer(),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    color: AppTheme.primary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16),
                     DefaultElevetedButton(
                       label: "Update Event",
-                      onPressed: createEvent,
+                      onPressed: updateEvent,
                     ),
                   ],
                 ),
@@ -248,7 +230,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
     );
   }
 
-  void createEvent() {
+  void updateEvent() async {
     if (formkey.currentState!.validate() &&
         selectedDate != null &&
         selectedTime != null) {
@@ -259,21 +241,28 @@ class _EditEventScreenState extends State<EditEventScreen> {
         selectedTime!.hour,
         selectedTime!.minute,
       );
-      EventModel event = EventModel(
-        userId: FirebaseAuth.instance.currentUser!.uid,
+
+      EventModel updatedEvent = EventModel(
+        id: event.id,
+        userId: event.userId,
         category: selectedCategory,
         title: titleController.text,
         description: discriptionController.text,
         dateTime: dateTime,
       );
-      FirebaseService.createEvent(event)
-          .then((_) {
-            Navigator.of(context).pop();
-            UiUtils.showSuccessMessage("Event created successuflly");
-          })
-          .catchError((_) {
-            UiUtils.showErrorMessage("Failed to create event");
-          });
+
+      try {
+        await FirebaseService.updateEvent(updatedEvent);
+
+        final provider = Provider.of<EventsProvider>(context, listen: false);
+        await provider.getEvents();
+
+        UiUtils.showSuccessMessage("Event updated successfully");
+
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      } catch (e) {
+        UiUtils.showErrorMessage("Failed to update event");
+      }
     }
   }
 }
