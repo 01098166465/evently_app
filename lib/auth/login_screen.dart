@@ -4,6 +4,7 @@ import 'package:evently/firebase_service.dart';
 
 import 'package:evently/home_screen.dart';
 import 'package:evently/l10n/app_localizations.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 
 import 'package:evently/widgets/default_eleveted_button.dart';
@@ -14,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeName = '/login';
+  static const String routeName = '/login-screen';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -26,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -109,7 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 label: "Login With Google",
                 borderColor: AppTheme.primary,
                 textColor: AppTheme.primary,
-                color: AppTheme.backgroundLight,
+                color: settingsProvider.isDark
+                    ? AppTheme.backgroundDark
+                    : AppTheme.backgroundLight,
                 onPressed: loginWithGoogle,
               ),
               SizedBox(height: 24),

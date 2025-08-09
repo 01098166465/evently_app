@@ -1,11 +1,14 @@
+import 'package:evently/auth/login_screen.dart';
+import 'package:evently/home_screen.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
-import '../../auth/login_screen.dart';
+import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import 'intro_page_item.dart';
 import 'intro_data.dart';
 
 class IntroScreen extends StatefulWidget {
-  static const String routeName = "/intro";
+  static const String routeName = "/intro-screen";
 
   @override
   State<IntroScreen> createState() => _IntroScreenState();
@@ -17,10 +20,13 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themMode = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: themMode.themeMode == ThemeMode.light
+          ? AppTheme.backgroundLight
+          : AppTheme.backgroundDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -80,10 +86,9 @@ class _IntroScreenState extends State<IntroScreen> {
                         : Icons.arrow_forward,
                     onTap: () {
                       if (currentIndex == introPages.length - 1) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
+                        Navigator.of(context).pushReplacementNamed(
+                          LoginScreen.routeName,
+                          arguments: themMode.isDark,
                         );
                       } else {
                         _controller.nextPage(
@@ -104,11 +109,14 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   Widget buildNavButton({required IconData icon, required VoidCallback onTap}) {
+    final themMode = Provider.of<SettingsProvider>(context);
     return IconButton(
       onPressed: onTap,
       icon: Icon(icon, color: AppTheme.primary),
       style: IconButton.styleFrom(
-        backgroundColor: AppTheme.backgroundLight,
+        backgroundColor: themMode.themeMode == ThemeMode.light
+            ? AppTheme.backgroundLight
+            : AppTheme.backgroundDark,
         side: BorderSide(color: AppTheme.primary),
         shape: CircleBorder(),
         fixedSize: Size(30, 30),

@@ -1,12 +1,15 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/events/create_event_screen.dart';
 import 'package:evently/nav_bar_icon.dart';
+import 'package:evently/providers/settings_provider.dart';
+
 import 'package:evently/tabs/home/home_tab.dart';
 import 'package:evently/tabs/love/love_tab.dart';
 import 'package:evently/tabs/map/map_tab.dart';
 import 'package:evently/tabs/profile/profile_tab.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -21,11 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     return Scaffold(
       body: tabs[currentIndex],
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.zero,
-        color: AppTheme.primary,
+        color: settingsProvider.isDark
+            ? AppTheme.backgroundDark
+            : AppTheme.primary,
         shape: CircularNotchedRectangle(),
         notchMargin: 5,
         clipBehavior: Clip.antiAlias,

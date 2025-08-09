@@ -3,6 +3,7 @@ import 'package:evently/events/edit_event_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/providers/events_provider.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +14,7 @@ class EventDetalisScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     final event = ModalRoute.of(context)!.settings.arguments as EventModel;
     TextTheme textTheme = Theme.of(context).textTheme;
     Size screenSize = MediaQuery.sizeOf(context);
@@ -137,7 +139,12 @@ class EventDetalisScreen extends StatelessWidget {
                     ),
                     child: SvgPicture.asset(
                       "assets/icons/date.svg",
-                      color: AppTheme.white,
+                      colorFilter: ColorFilter.mode(
+                        settingsProvider.isDark
+                            ? AppTheme.black
+                            : AppTheme.white,
+                        BlendMode.srcIn,
+                      ),
                       height: 24,
                       width: 24,
                     ),
@@ -182,7 +189,12 @@ class EventDetalisScreen extends StatelessWidget {
                     ),
                     child: SvgPicture.asset(
                       "assets/icons/location.svg",
-                      color: AppTheme.white,
+                      colorFilter: ColorFilter.mode(
+                        settingsProvider.isDark
+                            ? AppTheme.black
+                            : AppTheme.white,
+                        BlendMode.srcIn,
+                      ),
                       height: 24,
                       width: 24,
                     ),
@@ -217,14 +229,20 @@ class EventDetalisScreen extends StatelessWidget {
             Text(
               "Description",
               style: textTheme.titleLarge!.copyWith(
-                color: AppTheme.primary,
+                color: settingsProvider.isDark
+                    ? AppTheme.white
+                    : AppTheme.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 8),
             Text(
               event.description,
-              style: textTheme.bodyLarge,
+              style: textTheme.bodyLarge!.copyWith(
+                color: settingsProvider.isDark
+                    ? AppTheme.white
+                    : AppTheme.black,
+              ),
               textAlign: TextAlign.justify,
             ),
           ],

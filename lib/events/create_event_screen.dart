@@ -224,7 +224,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             ),
                             child: SvgPicture.asset(
                               "assets/icons/location.svg",
-                              color: AppTheme.white,
+                              colorFilter: ColorFilter.mode(
+                                settingsProvider.isDark
+                                    ? AppTheme.black
+                                    : AppTheme.white,
+                                BlendMode.srcIn,
+                              ),
                             ),
                           ),
                           SizedBox(width: 8),

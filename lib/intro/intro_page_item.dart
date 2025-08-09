@@ -1,4 +1,6 @@
+import 'package:evently/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 
 class IntroPageItem extends StatelessWidget {
@@ -9,6 +11,7 @@ class IntroPageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return Padding(
@@ -24,7 +27,10 @@ class IntroPageItem extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               pageData["title"]!,
-              style: textTheme.titleLarge!.copyWith(color: AppTheme.primary),
+              style: textTheme.titleLarge!.copyWith(
+                color: AppTheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           SizedBox(height: 30),
@@ -32,7 +38,11 @@ class IntroPageItem extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               pageData["desc"]!,
-              style: textTheme.titleMedium!.copyWith(color: AppTheme.black),
+              style: textTheme.titleMedium!.copyWith(
+                color: settingsProvider.isDark
+                    ? AppTheme.white
+                    : AppTheme.black,
+              ),
             ),
           ),
         ],

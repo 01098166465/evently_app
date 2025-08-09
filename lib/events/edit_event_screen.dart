@@ -3,6 +3,7 @@ import 'package:evently/firebase_service.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/models/categery_model.dart';
 import 'package:evently/models/event_model.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
@@ -58,6 +59,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     Size screenSize = MediaQuery.sizeOf(context);
 
@@ -150,6 +152,12 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       children: [
                         SvgPicture.asset(
                           "assets/icons/date.svg",
+                          colorFilter: ColorFilter.mode(
+                            settingsProvider.isDark
+                                ? AppTheme.white
+                                : AppTheme.black,
+                            BlendMode.srcIn,
+                          ),
                           height: 24,
                           width: 24,
                         ),
@@ -187,6 +195,12 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       children: [
                         SvgPicture.asset(
                           "assets/icons/time.svg",
+                          colorFilter: ColorFilter.mode(
+                            settingsProvider.isDark
+                                ? AppTheme.white
+                                : AppTheme.black,
+                            BlendMode.srcIn,
+                          ),
                           height: 24,
                           width: 24,
                         ),
@@ -215,6 +229,56 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppTheme.primary),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primary,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: SvgPicture.asset(
+                              "assets/icons/location.svg",
+                              colorFilter: ColorFilter.mode(
+                                settingsProvider.isDark
+                                    ? AppTheme.black
+                                    : AppTheme.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Cairo , Egypt ",
+                                  style: textTheme.titleMedium!.copyWith(
+                                    color: AppTheme.primary,
+                                  ),
+                                ),
+                                Spacer(),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    color: AppTheme.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
                     SizedBox(height: 16),
                     DefaultElevetedButton(
                       label: "Update Event",
