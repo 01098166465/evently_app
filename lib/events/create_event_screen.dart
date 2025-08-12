@@ -1,7 +1,9 @@
 import 'package:evently/app_theme.dart';
+import 'package:evently/events/location_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/models/categery_model.dart';
 import 'package:evently/models/event_model.dart';
+import 'package:evently/providers/app_manager_map.dart';
 import 'package:evently/providers/events_provider.dart';
 import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
@@ -30,6 +32,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   TimeOfDay? selectedTime;
   DateFormat dateFormat = DateFormat("dd/M/yyyy");
   int currentIndex = 0;
+  late AppProvider appProvider;
+  @override
+  void initState() {
+    appProvider = Provider.of<AppProvider>(context, listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,36 +241,46 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             ),
                           ),
                           SizedBox(width: 8),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Cairo , Egypt ",
+
+                          Consumer<AppProvider>(
+                            builder: (context, settingsProvider, child) {
+                              return Expanded(
+                                child: Text(
+                                  appProvider.eventLocation == null
+                                      ? "Select Location"
+                                      : "${appProvider.eventLocation!.latitude.toString()}, ${appProvider.eventLocation!.longitude.toString()}",
                                   style: textTheme.titleMedium!.copyWith(
                                     color: AppTheme.primary,
                                   ),
                                 ),
-                                Spacer(),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    color: AppTheme.primary,
-                                  ),
-                                ),
-                              ],
+                              );
+                            },
+                          ),
+                          SizedBox(width: 5),
+                          IconButton(
+                            onPressed: () => {
+                              Navigator.of(
+                                context,
+                              ).pushNamed(LocationScreen.routeName),
+                            },
+                            icon: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: AppTheme.primary,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 16),
-                    DefaultElevetedButton(
-                      label: "Add Event",
-                      onPressed: createEvent,
-                    ),
                   ],
                 ),
+              ),
+            ),
+            SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: DefaultElevetedButton(
+                label: "Add Event",
+                onPressed: createEvent,
               ),
             ),
           ],
@@ -272,6 +290,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   void createEvent() {
+    if (appProvider.eventLocation == null) {
+      return UiUtils.showErrorMessage("Please select a location");
+    }
+
     if (formkey.currentState!.validate() &&
         selectedDate != null &&
         selectedTime != null) {
@@ -289,6 +311,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         title: titleController.text,
         description: discriptionController.text,
         dateTime: dateTime,
+        lat: appProvider.eventLocation?.latitude ?? 0,
+        long: appProvider.eventLocation?.longitude ?? 0,
       );
 
       FirebaseService.createEvent(event)

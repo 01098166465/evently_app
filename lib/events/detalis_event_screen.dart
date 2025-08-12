@@ -1,11 +1,14 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/events/edit_event_screen.dart';
+import 'package:evently/events/location_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/models/event_model.dart';
+import 'package:evently/providers/app_manager_map.dart';
 import 'package:evently/providers/events_provider.dart';
 import 'package:evently/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +17,7 @@ class EventDetalisScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(context);
     SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     final event = ModalRoute.of(context)!.settings.arguments as EventModel;
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -39,7 +43,7 @@ class EventDetalisScreen extends StatelessWidget {
                 builder: (_) => AlertDialog(
                   title: Text(
                     "Delete Event",
-                    style: TextStyle(color: AppTheme.primary), // لون العنوان
+                    style: TextStyle(color: AppTheme.primary),
                   ),
                   content: Text("Are you sure you want to delete this event?"),
                   actions: [
@@ -200,28 +204,52 @@ class EventDetalisScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      "Cairo, Egypt",
-                      style: textTheme.titleMedium!.copyWith(
-                        color: AppTheme.primary,
-                      ),
-                    ),
+                  Consumer<AppProvider>(
+                    builder: (context, appProvider, child) {
+                      return Expanded(
+                        child: Text(
+                          appProvider.eventLocation == null
+                              ? "Select Location"
+                              : "${appProvider.eventLocation!.latitude.toString()}, ${appProvider.eventLocation!.longitude.toString()}",
+                          style: textTheme.titleMedium!.copyWith(
+                            color: AppTheme.primary,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 18,
+                  /* IconButton(
+                    onPressed: () => {
+                        Navigator.of(context).pushNamed(LocationScreen.routeName),
+                    },
+                    icon: Icon(Icons.arrow_forward_ios_outlined),
+                    iconSize: 18,
                     color: AppTheme.primary,
-                  ),
+                  ),*/
                 ],
               ),
             ),
 
             SizedBox(height: 16),
 
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.asset("assets/images/location.png"),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.primary),
+              ),
+              height: screenSize.height * 0.4,
+              width: double.infinity,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: GoogleMap(
+                  initialCameraPosition: appProvider.eventLocation != null
+                      ? CameraPosition(
+                          target: appProvider.eventLocation!,
+                          zoom: 14.4746,
+                        )
+                      : appProvider.cameraPosition,
+                ),
+              ),
             ),
 
             SizedBox(height: 24),
