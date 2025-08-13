@@ -143,6 +143,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     DefaultTextFormField(
                       hintText: "Enter description",
                       controller: discriptionController,
+                      maxLines: 5,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Description can not be empty";

@@ -167,7 +167,9 @@ class EventDetalisScreen extends StatelessWidget {
                         DateFormat(
                           'h:mma',
                         ).format(event.dateTime).toUpperCase(),
-                        style: textTheme.titleMedium,
+                        style: textTheme.titleMedium!.copyWith(
+                          color: AppTheme.primary,
+                        ),
                       ),
                     ],
                   ),

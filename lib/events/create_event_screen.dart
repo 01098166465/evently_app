@@ -126,6 +126,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     SizedBox(height: 8),
                     DefaultTextFormField(
                       hintText: "Event Description",
+                      maxLines: 5,
+
                       controller: discriptionController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
