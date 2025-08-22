@@ -111,7 +111,9 @@ class EventItem extends StatelessWidget {
                         if (currentUser == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("يجب تسجيل الدخول لإضافة للمفضلة"),
+                              content: Text(
+                                "You must be logged in to add events to favorites",
+                              ),
                             ),
                           );
                           return;

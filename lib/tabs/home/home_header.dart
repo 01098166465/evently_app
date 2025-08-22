@@ -44,7 +44,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               SizedBox(height: 8),
               Text("Welcome Back ✨", style: textTheme.titleSmall),
               SizedBox(height: 8),
-              Text(user?.name ?? "ضيف", style: textTheme.headlineSmall),
+              Text(user?.name ?? "user test", style: textTheme.headlineSmall),
               SizedBox(height: 8),
               Row(
                 children: [
