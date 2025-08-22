@@ -172,15 +172,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     } catch (error) {
-      String errorMessage = 'حدث خطأ أثناء تسجيل الدخول بجوجل';
+      String errorMessage = "failed to login with Google";
 
       if (error is FirebaseAuthException) {
         switch (error.code) {
           case 'sign-in-cancelled':
-            errorMessage = 'تم إلغاء تسجيل الدخول بجوجل.';
+            errorMessage = 'sign-in-cancelled';
             break;
           default:
-            errorMessage = 'خطأ: ${error.message}';
+            errorMessage = 'error: ${error.message}';
         }
       }
 
