@@ -1,8 +1,10 @@
 import 'package:evently/app_theme.dart';
+import 'package:evently/events/location_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/models/categery_model.dart';
 import 'package:evently/models/event_model.dart';
+import 'package:evently/providers/app_manager_map.dart';
 import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/default_eleveted_button.dart';
@@ -60,6 +62,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   @override
   Widget build(BuildContext context) {
     SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
+    AppProvider appProvider = Provider.of<AppProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     Size screenSize = MediaQuery.sizeOf(context);
 
@@ -140,6 +143,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     DefaultTextFormField(
                       hintText: "Enter description",
                       controller: discriptionController,
+                      maxLines: 5,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Description can not be empty";
@@ -256,36 +260,38 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           ),
                           SizedBox(width: 8),
                           Expanded(
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Cairo , Egypt ",
-                                  style: textTheme.titleMedium!.copyWith(
-                                    color: AppTheme.primary,
-                                  ),
-                                ),
-                                Spacer(),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    color: AppTheme.primary,
-                                  ),
-                                ),
-                              ],
+                            child: Text(
+                              "${appProvider.eventLocation!.latitude}, ${appProvider.eventLocation!.longitude}",
+                              style: textTheme.titleMedium!.copyWith(
+                                color: AppTheme.primary,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => {
+                              Navigator.of(
+                                context,
+                              ).pushNamed(LocationScreen.routeName),
+                            },
+                            icon: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: AppTheme.primary,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 16),
-                    SizedBox(height: 16),
-                    DefaultElevetedButton(
-                      label: "Update Event",
-                      onPressed: updateEvent,
-                    ),
                   ],
                 ),
+              ),
+            ),
+            SizedBox(height: 16),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: DefaultElevetedButton(
+                label: "Update Event",
+                onPressed: updateEvent,
               ),
             ),
           ],

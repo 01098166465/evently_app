@@ -9,6 +9,7 @@ class DefaultTextFormField extends StatefulWidget {
   String? prefixIconImageName;
   String? Function(String?)? validator;
   bool isPassword;
+  final int? maxLines;
 
   DefaultTextFormField({
     required this.hintText,
@@ -17,6 +18,7 @@ class DefaultTextFormField extends StatefulWidget {
     this.prefixIconImageName,
     this.validator,
     this.isPassword = false,
+    this.maxLines,
   });
 
   @override
@@ -31,6 +33,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
       controller: widget.controller,
       onChanged: widget.onChanged,
       style: Theme.of(context).textTheme.titleMedium,
+      maxLines: widget.maxLines ?? 1,
       decoration: InputDecoration(
         hintText: widget.hintText,
         prefixIcon: widget.prefixIconImageName == null

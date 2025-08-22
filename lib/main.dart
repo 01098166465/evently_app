@@ -4,9 +4,11 @@ import 'package:evently/auth/register_screen.dart';
 import 'package:evently/events/create_event_screen.dart';
 import 'package:evently/events/edit_event_screen.dart';
 import 'package:evently/events/detalis_event_screen.dart';
+import 'package:evently/events/location_screen.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro/intro_first_screen.dart';
 import 'package:evently/intro/intro_screen.dart';
+import 'package:evently/providers/app_manager_map.dart';
 import 'package:evently/providers/events_provider.dart';
 import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
@@ -23,6 +25,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(create: (_) => EventsProvider()..getEvents()),
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
       ],
@@ -46,6 +49,7 @@ class EventlyApp extends StatelessWidget {
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
         EventDetalisScreen.routeName: (_) => EventDetalisScreen(),
         EditEventScreen.routeName: (_) => EditEventScreen(),
+        LocationScreen.routeName: (_) => LocationScreen(),
       },
 
       initialRoute: IntroFirstScreen.routeName,
